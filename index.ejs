@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello world</title>
+</head>
+<body>
+    <h1>Welcome to my note</h1>
+    <form action="/insert" method="post">
+        <input type="text" name="todo">
+        <input type="date" name="date">
+        <button type="submit">add todo list</button>
+    </form>
+    <% for(var i=0 ; i<data.length ; i++)  { %> 
+        <b>todo :</b> <%= data[i].todo %>  
+        <b>date :</b> <%= data[i].date %>
+        <button onclick="update('<%= data[i]._id %>','<%= data[i].todo %>')">update</button> 
+        <button onclick="deleteTodo('<%= data[i]._id %>')">delete</button><br>
+    <% } %> 
+
+    <script>
+        function update(id,data){
+            var newData = prompt("Please enter your new data", data);
+            if (newData != null) {
+                fetch('/update', {
+                    method: 'put',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      id: id,
+                      data: newData
+                    })
+                })
+            }
+        }
+        function deleteTodo(id){
+            fetch('/delete', {
+                method: 'delete',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  id: id
+                })
+            })
+        }
+    </script>
+</body>
+</html>
+
+
